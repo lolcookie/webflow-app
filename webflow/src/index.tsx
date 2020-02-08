@@ -1,4 +1,5 @@
-import * as firebase from 'firebase';
+import * as firebase from "firebase";
+import { DataMessage } from "../../functions/src/data-types";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -25,17 +26,17 @@ loginbtn.addEventListener("click", function() {
       //@ts-ignore
       var token = result.credential.accessToken;
       // The signed-in user info.
-    //   var user = result.user;
+      //   var user = result.user;
       // ...
     })
     .catch(function(error) {
       // Handle Errors here.
-    //   var errorCode = error.code;
-    //   var errorMessage = error.message;
-    //   // The email of the user's account used.
-    //   var email = error.email;
-    //   // The firebase.auth.AuthCredential type that was used.
-    //   var credential = error.credential;
+      //   var errorCode = error.code;
+      //   var errorMessage = error.message;
+      //   // The email of the user's account used.
+      //   var email = error.email;
+      //   // The firebase.auth.AuthCredential type that was used.
+      //   var credential = error.credential;
       // ...
     });
 });
@@ -99,9 +100,9 @@ function sendMessage(event) {
   db.collection("messages")
     .add({
       content: val,
-      createdBy: uid,
-      createdAt: new Date()
-    })
+      created_by: uid,
+      created_at: new Date()
+    } as DataMessage)
     .then(function(docRef) {
       console.log("Document written with ID: ", docRef.id);
     })
