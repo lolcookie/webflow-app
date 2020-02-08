@@ -104,15 +104,28 @@ function sendMessage(event) {
       created_at: new Date()
     } as DataMessage)
     .then(function(docRef) {
-      console.log("Document written with ID: ", docRef.id);
+      console.log(docRef);
+      //   console.log("Document written with ID: ", docRef.id);
     })
     .catch(function(error) {
       console.error("Error adding document: ", error);
     });
 }
 
-db.collection("messages")
-  .doc("SF")
-  .onSnapshot(function(doc) {
-    console.log("Current data: ", doc.data());
+var messageCache = {};
+db.collection("messages").onSnapshot(function(querySnapshot) {
+  querySnapshot.forEach(function(doc) {
+    // doc.data() is never undefined for query doc snapshots
+    //@ts-ignore
+    var messagebox = document.getElementById("messagebox");
+    if (!messageCache[doc.id]) {
+      var cln = messagebox.cloneNode(true);
+      cln.textContent = doc.data().content;
+      document.getElementById("messagecontainer").appendChild(cln);
+
+      messageCache[doc.id] = true;
+    }
+
+    console.log(doc.id, " => ", doc.data());
   });
+});
